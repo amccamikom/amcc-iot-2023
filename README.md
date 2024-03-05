@@ -10,7 +10,7 @@ Repository materi pembelajaran member Divisi Internet of Things AMCC 2023/2024
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
 | 1    | [Pengenalan IoT baik dalam bentuk perangkat maupun platform]("https://medium.com/amcc-amikom/exploring-the-world-of-microcontroller-1d217f346722")                    | [✅]  |
 | 2    | [Praktik alat alat output (LeD, LCD 16x2, Buzzer, Akuator, dll]("https://medium.com/amcc-amikom/output-stringing-with-led-16x2-lcd-buzzer-and-actuator-dd85866681cb") | [✅]  |
-| 3    | Praktik alat Input (Sensor, Potensiometer, button)                                                                                                                    | [❌]  |
+| 3    | [Praktik alat Input (Sensor, Potensiometer, button)]("google.com")                                                                                                    | [✅]  |
 | 4    | Pengaplikasian platfrom ThingSpeak                                                                                                                                    | [❌]  |
 | 5    | Pengaplikasian dashboard Blynk                                                                                                                                        | [❌]  |
 | 6    | Pengaplikasian dashboard Web Socket.io                                                                                                                                | [❌]  |
