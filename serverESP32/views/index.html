@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Control Lamp</title>
+</head>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    
+    .container {
+        background: linear-gradient(to bottom right, #3498db, #000000);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+    
+    header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    main {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 20px;
+        border-radius: 10px;
+    }
+    
+    .view-control {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        border: 2px solid white;
+        display: flex;
+    }
+    
+    .logo {
+        margin: 20px;
+        width: 25%;
+    }
+    
+    .logo-lamp {
+        width: 60%;
+        height: 60%;
+    }
+    
+    .lamp {
+        padding: 10px;
+        background-color: #e74c3c;
+        box-shadow: 5px 5px #93514a;
+    }
+    
+    .button-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+    }
+    
+    button {
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+    }
+    
+    .notification-container {
+        margin-top: 20px;
+    }
+    
+    #notification {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    .button-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    button {
+        padding: 15px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 4px 4px #95c3e4;
+    }
+    
+    button:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
+    }
+    /* Tambahkan CSS untuk tampilan mobile */
+    
+    @media screen and (max-width: 768px) {
+        .button-container {
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        }
+        button {
+            padding: 10px;
+            font-size: 14px;
+        }
+        .view-control {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(298px, 1fr));
+        }
+        .logo {
+            margin: 0 20px;
+            width: 87%;
+        }
+        .logo-lamp {
+            visibility: hidden;
+            width: 0;
+            height: 0;
+        }
+        .lamp {
+            padding: 10px;
+            background-color: #e74c3c;
+        }
+    }
+    
+    @media screen and (min-width: 768px) {
+        body {
+            background: linear-gradient(to bottom right, #3498db, #e74c3c);
+        }
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        main {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            /* Lebar konten utama diubah menjadi 60% dari lebar layar */
+        }
+        canvas {
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            border: 2px solid white;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* Mengatur 4 kolom */
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 15px;
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            /* Gradient biru ke biru tua */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        .lds-dual-ring {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-dual-ring:after {
+            content: " ";
+            display: block;
+            width: 44px;
+            height: 44px;
+            margin: 8px;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .spinner {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+</style>
+
+<script>
+    async function Arduino(data) {
+        console.log(data);
+
+        let errMsg = document.getElementById("error");
+        let spinner = document.getElementById("spinner");
+
+        errMsg.style.display = "none";
+        spinner.style.display = "block";
+
+        try {
+            const res = await fetch("http://192.168.1.2:3000/data", {
+                method: "POST",
+                body: JSON.stringify({
+                    data,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            console.log("Data berhasil di fetch");
+            console.log(await res.json());
+
+            errMsg.style.display = "none";
+            spinner.style.display = "none";
+
+            let led1 = document.getElementById("led1");
+            let led2 = document.getElementById("led2");
+            let led3 = document.getElementById("led3");
+            let led4 = document.getElementById("led4");
+
+            let logoLed1 = document.querySelector("#logoLed1");
+            let logoLed2 = document.querySelector("#logoLed2");
+            let logoLed3 = document.querySelector("#logoLed3");
+            let logoLed4 = document.querySelector("#logoLed4");
+
+            if (data == "1") {
+                led1.style.backgroundColor = "green";
+                logoLed1.src = "/led-red-on";
+            }
+            if (data == "2") {
+                led1.style.backgroundColor = "#e74c3c";
+                logoLed1.src = "/led-off";
+            }
+            if (data == "3") {
+                led2.style.backgroundColor = "green";
+                logoLed2.src = "/led-blue-on";
+            }
+            if (data == "4") {
+                led2.style.backgroundColor = "#e74c3c";
+                logoLed2.src = "/led-off";
+            }
+            if (data == "5") {
+                led3.style.backgroundColor = "green";
+                logoLed3.src = "/led-green-on";
+            }
+            if (data == "6") {
+                led3.style.backgroundColor = "#e74c3c";
+                logoLed3.src = "/led-off";
+            }
+            if (data == "7") {
+                led4.style.backgroundColor = "green";
+                logoLed4.src = "/led-yellow-on";
+            }
+            if (data == "8") {
+                led4.style.backgroundColor = "#e74c3c";
+                logoLed4.src = "/led-off";
+            }
+        } catch (error) {
+            console.error(error);
+            spinner.style.display = "none";
+            errMsg.style.display = "block";
+            errMsg.innerText += error
+        }
+    }
+</script>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Control LED Dashboard</h1>
+            <h1 style="display: none; color: red;" id="error">Error : </h1>
+            <div class="spinner">
+                <div id="spinner" style="display: none" class="lds-dual-ring"></div>
+            </div>
+        </header>
+        <main>
+            <div class="view-control">
+                <div class="logo">
+                    <img class="logo-lamp" id="logoLed1" src="/led-off" alt="" />
+                    <p class="lamp" id="led1">LED 1</p>
+                </div>
+                <div class="logo">
+                    <img class="logo-lamp" id="logoLed2" src="/led-off" alt="" />
+                    <p class="lamp" id="led2">LED 2</p>
+                </div>
+                <div class="logo">
+                    <img class="logo-lamp" id="logoLed3" src="/led-off" alt="" />
+                    <p class="lamp" id="led3">LED 3</p>
+                </div>
+                <div class="logo">
+                    <img class="logo-lamp" id="logoLed4" src="/led-off" alt="" />
+                    <p class="lamp" id="led4">LED 4</p>
+                </div>
+            </div>
+            <div class="button-container">
+                <button onclick="Arduino('1')" id="button1">LED 1 ON</button>
+                <button onclick="Arduino('2')" id="button2">LED 1 OFF</button>
+                <button onclick="Arduino('3')" id="button3">LED 2 ON</button>
+                <button onclick="Arduino('4')" id="button4">LED 2 OFF</button>
+                <button onclick="Arduino('5')" id="button5">LED 3 ON</button>
+                <button onclick="Arduino('6')" id="button6">LED 3 OFF</button>
+                <button onclick="Arduino('7')" id="button7">LED 4 ON</button>
+                <button onclick="Arduino('8')" id="button8">LED 4 OFF</button>
+            </div>
+            <div class="notification-container">
+                <div id="notification"></div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
