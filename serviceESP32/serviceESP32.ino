@@ -1,10 +1,10 @@
 #include <Arduino.h>
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 #include <WebSocketsClient.h>
 
 const char* ssid = "iPhone";
 const char* password = "kosonggg";
-const char* serverAddress = "192.168.100.17";
+const char* serverAddress = "172.20.10.4"; // Diganti dengan Ipv4
 const int serverPort = 3002;
 const int led1 = 2;
 const int led2 = 4;
