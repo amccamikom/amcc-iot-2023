@@ -110,6 +110,6 @@ wsServer.on('request', function(request) {
     });
 });
 
-server.listen(3000, function() {
-    console.log('Server berjalan pada port 3000');
+server.listen(3002, function() {
+    console.log('Server berjalan pada port 3002');
 });
