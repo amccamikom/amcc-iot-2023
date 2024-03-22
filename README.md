@@ -31,3 +31,24 @@ Repository materi pembelajaran member Divisi Internet of Things AMCC 2023/2024
 
   </tr>
 </table>
+
+```
+amcc-iot-2023
+├─ Websocket
+|  ├─ server
+|  |  ├─ views
+|  |  |  ├─ img
+|  |  |  |  ├─ Led-blue-on.png
+|  |  |  |  ├─ Led-green-on.png
+|  |  |  |  ├─ Led-off.png
+|  |  |  |  ├─ Led-red-on.png
+|  |  |  |  └─ Led-yellow-on.png
+|  |  |  └─ index.html
+|  |  ├─ .gitignore
+|  |  ├─ package-lock.json
+|  |  ├─ package.json
+|  |  └─ server.js
+|  ├─ service
+|  |  └─ service.inoo
+
+```
