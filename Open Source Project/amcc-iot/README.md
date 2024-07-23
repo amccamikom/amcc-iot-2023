@@ -1,4 +1,4 @@
-# AMCC IoT library
+# AMCC IoT library ⭐
 
 ### Description
 

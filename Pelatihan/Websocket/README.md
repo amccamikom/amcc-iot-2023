@@ -1,4 +1,4 @@
-# Websockets
+# Websockets ⭐
 
 <img src="https://miro.medium.com/v2/resize:fit:800/1*_6Zt1h5jopuP9syi-VDoMg.jpeg">
 
